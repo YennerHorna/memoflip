@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MemoFlip</title>
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/board.css" />
+</head>
+<body>
+  <div class="app">
+    <section id="menuScreen" class="screen menu-screen">
+      <button id="settingsBtn" class="settings-btn" type="button" aria-label="Ajustes" title="Ajustes">
+        <svg viewBox="0 0 200 200" width="22" height="22" fill="none" aria-hidden="true">
+          <path d="M85 20
+                   L115 20
+                   C115 20, 112 35, 122 40
+                   C132 45, 140 35, 140 35
+                   L162 57
+                   C162 57, 152 65, 157 75
+                   C162 85, 178 85, 178 85
+                   L178 115
+                   C178 115, 162 112, 157 122
+                   C152 132, 162 140, 162 140
+                   L140 162
+                   C140 162, 132 152, 122 157
+                   C112 162, 115 178, 115 178
+                   L85 178
+                   C85 178, 88 162, 78 157
+                   C68 152, 57 162, 57 162
+                   L38 140
+                   C38 140, 48 132, 43 122
+                   C38 112, 22 115, 22 115
+                   L22 85
+                   C22 85, 38 88, 43 78
+                   C48 68, 38 57, 38 57
+                   L57 38
+                   C57 38, 68 48, 78 43
+                   C88 38, 85 20, 85 20
+                   Z"
+                stroke="currentColor" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="100" cy="100" r="28" stroke="currentColor" stroke-width="8"/>
+        </svg>
+      </button>
+
+      <div class="menu-hero">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="7" width="12" height="16" rx="2.4" transform="rotate(-10 9 15)"></rect>
+            <rect x="9" y="2" width="12" height="16" rx="2.4"></rect>
+          </svg>
+        </span>
+        <h1>MemoFlip</h1>
+        <p>Entrenador de memoria en sesiones cortas. Encuentra las parejas.</p>
+      </div>
+
+      <h2 class="section-title">Modo de juego</h2>
+      <div class="mode-group" id="modeGroup">
+        <button class="mode-card active" data-mode="classic">
+          <span class="mode-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="8.6"></circle>
+              <circle cx="12" cy="12" r="5"></circle>
+              <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"></circle>
+            </svg>
+          </span>
+          <span class="mode-text">
+            <strong>Clásico</strong>
+            <span>Encuentra las parejas iguales</span>
+          </span>
+        </button>
+        <button class="mode-card" data-mode="sequence" disabled>
+          <span class="mode-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17 2.5 20.5 6 17 9.5"></path>
+              <path d="M20.5 6H8a5 5 0 0 0-5 5v1"></path>
+              <path d="M7 21.5 3.5 18 7 14.5"></path>
+              <path d="M3.5 18H16a5 5 0 0 0 5-5v-1"></path>
+            </svg>
+          </span>
+          <span class="mode-text">
+            <strong>Secuencia</strong>
+            <span>Próximamente</span>
+          </span>
+        </button>
+        <button class="mode-card" data-mode="nback" disabled>
+          <span class="mode-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4 L9.8 4 A3.2 3.2 0 0 1 16.2 4 L20 4 L20 11.8 A3.2 3.2 0 0 0 20 18.2 L20 20 L4 20 Z"></path>
+            </svg>
+          </span>
+          <span class="mode-text">
+            <strong>N-back</strong>
+            <span>Próximamente</span>
+          </span>
+        </button>
+      </div>
+
+      <h2 class="section-title">Dificultad</h2>
+      <div class="diff-group" id="diffGroup">
+        <button data-diff="4x4" class="active">Fácil · 4×4</button>
+        <button data-diff="6x4">Normal · 6×4</button>
+        <button data-diff="6x6">Difícil · 6×6</button>
+      </div>
+
+      <button id="playBtn" class="primary play-btn">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="none" aria-hidden="true">
+          <path d="M6 4.2 19 12 6 19.8V4.2Z"></path>
+        </svg>
+        Jugar
+      </button>
+
+      <div id="settingsPanel" class="settings-panel hidden">
+        <div class="settings-panel-header">
+          <span>Ajustes</span>
+          <button id="closeSettingsBtn" class="icon-btn" type="button" aria-label="Cerrar">
+            <svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+              <line x1="5" y1="5" x2="15" y2="15"></line>
+              <line x1="15" y1="5" x2="5" y2="15"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="setting">
+          <span class="setting-label">Tema</span>
+          <div class="theme-group" id="themeGroup">
+            <button data-theme="auto" class="active">Auto</button>
+            <button data-theme="light">Claro</button>
+            <button data-theme="dark">Oscuro</button>
+          </div>
+        </div>
+
+        <div class="setting">
+          <div class="setting-row-header">
+            <span class="setting-label">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 9v6h4l5 4V5L8 9H4Z"></path>
+                <path d="M16.2 8.8a5 5 0 0 1 0 6.4"></path>
+                <path d="M18.8 6.2a8.6 8.6 0 0 1 0 11.6"></path>
+              </svg>
+              Efectos
+            </span>
+            <label class="switch">
+              <input type="checkbox" id="soundToggle" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <input type="range" id="soundVolume" class="volume-slider" min="0" max="100" value="100" />
+        </div>
+
+        <div class="setting">
+          <div class="setting-row-header">
+            <span class="setting-label">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 18V5l11-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="17" cy="16" r="3"></circle>
+              </svg>
+              Música
+            </span>
+            <label class="switch">
+              <input type="checkbox" id="musicToggle" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <input type="range" id="musicVolume" class="volume-slider" min="0" max="100" value="60" />
+        </div>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="screen panel hidden">
+      <div class="game-toolbar">
+        <button id="menuBtn">Menú</button>
+        <button id="restartBtn">Reiniciar</button>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-label">Tiempo</span>
+          <span class="stat-value" id="timeStat">0s</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Movimientos</span>
+          <span class="stat-value" id="movesStat">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Parejas</span>
+          <span class="stat-value"><span id="matchStat">0</span>/<span id="totalStat">0</span></span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Mejor</span>
+          <span class="stat-value" id="bestStat">—</span>
+        </div>
+      </div>
+
+      <div class="board-wrap">
+        <div id="board" class="board"></div>
+      </div>
+    </section>
+
+    <footer>
+      <p>MemoFlip — entrenamiento cognitivo basado en repetición espaciada y recuerdo activo.</p>
+    </footer>
+  </div>
+
+  <div class="win-overlay" id="winOverlay">
+    <div class="win-card">
+      <h2>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M8 12.4 10.6 15 16 9.5"></path>
+        </svg>
+        ¡Completado!
+      </h2>
+      <p id="winTime">0s</p>
+      <p id="winMoves">0 movimientos</p>
+      <p id="winBest"></p>
+      <button id="playAgainBtn" class="primary">Jugar de nuevo</button>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

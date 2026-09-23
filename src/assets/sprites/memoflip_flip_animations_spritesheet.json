@@ -1,0 +1,99 @@
+{
+  "frameWidth": 200,
+  "frameHeight": 280,
+  "framesPerAnimation": 10,
+  "cardWidth": 160,
+  "cardHeight": 220,
+  "rows": [
+    {
+      "name": "star_coral",
+      "rowIndex": 0,
+      "y": 0
+    },
+    {
+      "name": "star_blue",
+      "rowIndex": 1,
+      "y": 280
+    },
+    {
+      "name": "star_green",
+      "rowIndex": 2,
+      "y": 560
+    },
+    {
+      "name": "circle_coral",
+      "rowIndex": 3,
+      "y": 840
+    },
+    {
+      "name": "circle_blue",
+      "rowIndex": 4,
+      "y": 1120
+    },
+    {
+      "name": "circle_green",
+      "rowIndex": 5,
+      "y": 1400
+    },
+    {
+      "name": "diamond_coral",
+      "rowIndex": 6,
+      "y": 1680
+    },
+    {
+      "name": "diamond_blue",
+      "rowIndex": 7,
+      "y": 1960
+    },
+    {
+      "name": "diamond_green",
+      "rowIndex": 8,
+      "y": 2240
+    },
+    {
+      "name": "triangle_coral",
+      "rowIndex": 9,
+      "y": 2520
+    },
+    {
+      "name": "triangle_blue",
+      "rowIndex": 10,
+      "y": 2800
+    },
+    {
+      "name": "triangle_green",
+      "rowIndex": 11,
+      "y": 3080
+    },
+    {
+      "name": "heart_coral",
+      "rowIndex": 12,
+      "y": 3360
+    },
+    {
+      "name": "heart_blue",
+      "rowIndex": 13,
+      "y": 3640
+    },
+    {
+      "name": "heart_green",
+      "rowIndex": 14,
+      "y": 3920
+    },
+    {
+      "name": "hexagon_coral",
+      "rowIndex": 15,
+      "y": 4200
+    },
+    {
+      "name": "hexagon_blue",
+      "rowIndex": 16,
+      "y": 4480
+    },
+    {
+      "name": "hexagon_green",
+      "rowIndex": 17,
+      "y": 4760
+    }
+  ]
+}

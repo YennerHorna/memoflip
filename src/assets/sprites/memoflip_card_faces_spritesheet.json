@@ -1,0 +1,124 @@
+{
+  "frameWidth": 200,
+  "frameHeight": 280,
+  "columns": 5,
+  "rows": 4,
+  "cardWidth": 160,
+  "cardHeight": 220,
+  "frames": [
+    {
+      "name": "back",
+      "index": 0,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "name": "star_coral",
+      "index": 1,
+      "x": 200,
+      "y": 0
+    },
+    {
+      "name": "star_blue",
+      "index": 2,
+      "x": 400,
+      "y": 0
+    },
+    {
+      "name": "star_green",
+      "index": 3,
+      "x": 600,
+      "y": 0
+    },
+    {
+      "name": "circle_coral",
+      "index": 4,
+      "x": 800,
+      "y": 0
+    },
+    {
+      "name": "circle_blue",
+      "index": 5,
+      "x": 0,
+      "y": 280
+    },
+    {
+      "name": "circle_green",
+      "index": 6,
+      "x": 200,
+      "y": 280
+    },
+    {
+      "name": "diamond_coral",
+      "index": 7,
+      "x": 400,
+      "y": 280
+    },
+    {
+      "name": "diamond_blue",
+      "index": 8,
+      "x": 600,
+      "y": 280
+    },
+    {
+      "name": "diamond_green",
+      "index": 9,
+      "x": 800,
+      "y": 280
+    },
+    {
+      "name": "triangle_coral",
+      "index": 10,
+      "x": 0,
+      "y": 560
+    },
+    {
+      "name": "triangle_blue",
+      "index": 11,
+      "x": 200,
+      "y": 560
+    },
+    {
+      "name": "triangle_green",
+      "index": 12,
+      "x": 400,
+      "y": 560
+    },
+    {
+      "name": "heart_coral",
+      "index": 13,
+      "x": 600,
+      "y": 560
+    },
+    {
+      "name": "heart_blue",
+      "index": 14,
+      "x": 800,
+      "y": 560
+    },
+    {
+      "name": "heart_green",
+      "index": 15,
+      "x": 0,
+      "y": 840
+    },
+    {
+      "name": "hexagon_coral",
+      "index": 16,
+      "x": 200,
+      "y": 840
+    },
+    {
+      "name": "hexagon_blue",
+      "index": 17,
+      "x": 400,
+      "y": 840
+    },
+    {
+      "name": "hexagon_green",
+      "index": 18,
+      "x": 600,
+      "y": 840
+    }
+  ]
+}

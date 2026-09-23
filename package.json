@@ -1,0 +1,13 @@
+{
+  "name": "memoflip",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Juego web de memoria (parejas) como entrenador cognitivo de sesiones cortas.",
+  "scripts": {
+    "dev": "serve src"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}

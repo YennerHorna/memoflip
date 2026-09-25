@@ -1,14 +1,34 @@
 .diff-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.diff-description { margin: 10px 0 0; font-size: 0.82rem; line-height: 1.4; color: var(--text-soft); min-height: 2.8em; }
 
-.game-toolbar { display: flex; justify-content: space-between; margin-bottom: 16px; }
+#gameScreen { flex: 1; display: flex; flex-direction: column; padding: 12px; }
+#gameScreen.hidden { display: none; }
 
-.stats { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 16px; }
+.game-toolbar { display: flex; justify-content: space-between; margin-bottom: 10px; flex-shrink: 0; }
+.toolbar-right { display: flex; gap: 8px; }
+.help-btn { width: 36px; height: 36px; padding: 0; border-radius: 50%; font-weight: 700; font-size: 0.95rem; }
+
+.stats { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 10px; flex-shrink: 0; }
 .stat { text-align: center; min-width: 64px; }
 .stat-label { display: block; font-size: 0.72rem; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.04em; }
 .stat-value { display: block; font-size: 1.05rem; font-weight: 600; margin-top: 2px; }
 
-.board-wrap { background: var(--board-bg); border-radius: 14px; padding: 14px; }
-.board { display: grid; gap: 10px; perspective: 800px; }
+.game-status {
+  text-align: center; margin: 0 0 8px; font-weight: 600; color: var(--accent-2); min-height: 1.2em; flex-shrink: 0;
+}
+.game-status.hidden { display: none; }
+
+/* El tablero toma el alto restante y se escala para que todas las cartas (3:4) quepan. */
+.board-wrap {
+  flex: 1; min-height: 0; background: var(--board-bg); border-radius: 14px; padding: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.board-fit { width: 100%; height: 100%; container-type: size; display: flex; align-items: center; justify-content: center; }
+.board {
+  --gap: clamp(4px, 1.6cqmin, 10px);
+  display: grid; gap: var(--gap); perspective: 800px;
+  width: min(100cqw, calc(((100cqh - (var(--rows) - 1) * var(--gap)) / var(--rows)) * 0.75 * var(--cols) + (var(--cols) - 1) * var(--gap)));
+}
 
 .tile { position: relative; aspect-ratio: 3 / 4; cursor: pointer; }
 .tile-inner {
@@ -56,3 +76,83 @@
   color: var(--accent); font-weight: 600; min-height: 1.2em;
 }
 .win-card button { margin-top: 16px; }
+
+/* --- Tutorial --- */
+.tutorial-overlay { z-index: 20; }
+.tutorial-card { max-width: 360px; padding: 22px 20px 18px; }
+.tutorial-card h2 { color: var(--text); font-size: 1.25rem; }
+.tutorial-kicker {
+  display: block; font-size: 0.72rem; font-weight: 600; color: var(--accent-2);
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
+}
+.tutorial-art { display: flex; margin: 6px 0 12px; }
+.tutorial-art.hidden { display: none; }
+.tutorial-badge {
+  position: absolute; top: -8px; right: -8px; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--accent-2); color: #fff; font-size: 0.75rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.win-card .tutorial-text { color: var(--text-soft); line-height: 1.45; font-size: 0.92rem; min-height: 4.4em; margin: 0; }
+.tutorial-dots { display: flex; justify-content: center; gap: 6px; margin: 14px 0 4px; }
+.tutorial-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+.tutorial-dots span.active { background: var(--accent-2); }
+.tutorial-actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.win-card .tutorial-actions button { margin-top: 10px; }
+.link-btn { border: none; background: none; color: var(--text-soft); text-decoration: underline; }
+.invisible { visibility: hidden; }
+
+/* --- N-back: una carta centrada + botón de respuesta --- */
+.board.nback-board {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+}
+.nback-card-slot { height: min(62cqh, 320px); aspect-ratio: 3 / 4; }
+.nback-card-slot .tile { width: 100%; height: 100%; cursor: default; }
+.nback-card-slot .tile.hit .face.front { outline: 4px solid var(--matched); outline-offset: -4px; }
+.nback-feedback { margin: 0; min-height: 1.3em; font-weight: 600; font-size: 0.95rem; text-align: center; }
+.nback-feedback.good { color: var(--matched); }
+.nback-feedback.bad { color: var(--accent); }
+.nback-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 26px; font-size: 1rem; }
+.nback-btn kbd {
+  font-family: inherit; font-size: 0.7rem; font-weight: 500; padding: 2px 6px;
+  border-radius: 6px; background: rgba(255, 255, 255, 0.22);
+}
+@media (hover: none) { .nback-btn kbd { display: none; } }
+
+/* --- Demos animadas del tutorial --- */
+.tutorial-art { flex-direction: column; align-items: center; gap: 8px; min-height: 196px; justify-content: center; }
+.demo-stage {
+  --demo-card: 52px;
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.demo-grid { display: grid; gap: 8px; perspective: 600px; }
+.demo-grid .tile { width: var(--demo-card); cursor: default; }
+.demo-grid .face { border-radius: 7px; box-shadow: 0 3px 7px var(--shadow); }
+.demo-grid .tile.matched .face.front { border-radius: 7px; }
+/* La figura del N-back se muestra más grande, como en el juego. */
+.demo-grid .tile:only-child { width: 76px; }
+.demo-grid .tutorial-badge { z-index: 2; }
+
+.demo-button {
+  background: var(--accent); color: #fff; font-weight: 600; font-size: 0.8rem;
+  padding: 6px 16px; border-radius: 999px; transition: transform .12s ease;
+}
+.demo-button.pressed { transform: scale(0.9); }
+
+.demo-hand {
+  position: absolute; left: 0; top: 0; pointer-events: none; z-index: 3;
+  opacity: 0; transition: transform 0.45s cubic-bezier(.4,.2,.2,1), opacity 0.2s ease;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+}
+.demo-hand.visible { opacity: 1; }
+.demo-hand.tapping svg { animation: demo-tap 0.5s ease 0.35s; }
+@keyframes demo-tap { 0%, 100% { transform: scale(1); } 50% { transform: scale(0.8); } }
+
+.win-card .demo-caption {
+  margin: 0; min-height: 1.3em; font-size: 0.82rem; font-weight: 600; color: var(--accent-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-hand { transition: opacity 0.2s ease; }
+  .demo-hand.tapping svg { animation: none; }
+}

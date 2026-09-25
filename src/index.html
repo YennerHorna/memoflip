@@ -51,7 +51,7 @@
           </svg>
         </span>
         <h1>MemoFlip</h1>
-        <p>Entrenador de memoria en sesiones cortas. Encuentra las parejas.</p>
+        <p>Encuentra las parejas.</p>
       </div>
 
       <h2 class="section-title">Modo de juego</h2>
@@ -69,7 +69,7 @@
             <span>Encuentra las parejas iguales</span>
           </span>
         </button>
-        <button class="mode-card" data-mode="sequence" disabled>
+        <button class="mode-card" data-mode="sequence">
           <span class="mode-icon">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M17 2.5 20.5 6 17 9.5"></path>
@@ -80,10 +80,10 @@
           </span>
           <span class="mode-text">
             <strong>Secuencia</strong>
-            <span>Próximamente</span>
+            <span>Repite el orden en que se revelan</span>
           </span>
         </button>
-        <button class="mode-card" data-mode="nback" disabled>
+        <button class="mode-card" data-mode="nback">
           <span class="mode-icon">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M4 4 L9.8 4 A3.2 3.2 0 0 1 16.2 4 L20 4 L20 11.8 A3.2 3.2 0 0 0 20 18.2 L20 20 L4 20 Z"></path>
@@ -91,17 +91,14 @@
           </span>
           <span class="mode-text">
             <strong>N-back</strong>
-            <span>Próximamente</span>
+            <span>¿Es igual a la de hace N cartas?</span>
           </span>
         </button>
       </div>
 
       <h2 class="section-title">Dificultad</h2>
-      <div class="diff-group" id="diffGroup">
-        <button data-diff="4x4" class="active">Fácil · 4×4</button>
-        <button data-diff="6x4">Normal · 6×4</button>
-        <button data-diff="6x6">Difícil · 6×6</button>
-      </div>
+      <div class="diff-group" id="diffGroup"></div>
+      <p id="diffDescription" class="diff-description"></p>
 
       <button id="playBtn" class="primary play-btn">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="none" aria-hidden="true">
@@ -163,7 +160,7 @@
               <span class="slider"></span>
             </label>
           </div>
-          <input type="range" id="musicVolume" class="volume-slider" min="0" max="100" value="60" />
+          <input type="range" id="musicVolume" class="volume-slider" min="0" max="100" value="30" />
         </div>
       </div>
     </section>
@@ -171,36 +168,57 @@
     <section id="gameScreen" class="screen panel hidden">
       <div class="game-toolbar">
         <button id="menuBtn">Menú</button>
-        <button id="restartBtn">Reiniciar</button>
+        <div class="toolbar-right">
+          <button id="helpBtn" class="help-btn" type="button" aria-label="Cómo jugar" title="Cómo jugar">?</button>
+          <button id="restartBtn">Reiniciar</button>
+        </div>
       </div>
 
       <div class="stats">
         <div class="stat">
-          <span class="stat-label">Tiempo</span>
+          <span class="stat-label" data-stat-label="time">Tiempo</span>
           <span class="stat-value" id="timeStat">0s</span>
         </div>
         <div class="stat">
-          <span class="stat-label">Movimientos</span>
+          <span class="stat-label" data-stat-label="moves">Movimientos</span>
           <span class="stat-value" id="movesStat">0</span>
         </div>
         <div class="stat">
-          <span class="stat-label">Parejas</span>
+          <span class="stat-label" data-stat-label="matches">Parejas</span>
           <span class="stat-value"><span id="matchStat">0</span>/<span id="totalStat">0</span></span>
         </div>
         <div class="stat">
-          <span class="stat-label">Mejor</span>
+          <span class="stat-label" data-stat-label="best">Mejor</span>
           <span class="stat-value" id="bestStat">—</span>
         </div>
       </div>
 
+      <p id="gameStatus" class="game-status hidden" aria-live="polite"></p>
+
       <div class="board-wrap">
-        <div id="board" class="board"></div>
+        <div class="board-fit"><div id="board" class="board"></div></div>
       </div>
     </section>
 
     <footer>
       <p>MemoFlip — entrenamiento cognitivo basado en repetición espaciada y recuerdo activo.</p>
+      <p>By Yenner Horna</p>
     </footer>
+  </div>
+
+  <div class="win-overlay tutorial-overlay" id="tutorialOverlay" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
+    <div class="win-card tutorial-card">
+      <span class="tutorial-kicker">Cómo jugar</span>
+      <h2 id="tutorialTitle"></h2>
+      <div id="tutorialArt" class="tutorial-art"></div>
+      <p id="tutorialText" class="tutorial-text"></p>
+      <div id="tutorialDots" class="tutorial-dots"></div>
+      <div class="tutorial-actions">
+        <button id="tutorialPrevBtn" type="button">Atrás</button>
+        <button id="tutorialSkipBtn" type="button" class="link-btn">Saltar</button>
+        <button id="tutorialNextBtn" type="button" class="primary">Siguiente</button>
+      </div>
+    </div>
   </div>
 
   <div class="win-overlay" id="winOverlay">
@@ -210,7 +228,7 @@
           <circle cx="12" cy="12" r="9"></circle>
           <path d="M8 12.4 10.6 15 16 9.5"></path>
         </svg>
-        ¡Completado!
+        <span id="winTitle">¡Completado!</span>
       </h2>
       <p id="winTime">0s</p>
       <p id="winMoves">0 movimientos</p>

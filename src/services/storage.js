@@ -33,6 +33,35 @@ export function saveBestResultIfBetter(diffKey, { seconds, moves }) {
   return isBetter;
 }
 
+export function getBestSequenceLength(diffKey) {
+  return getItem(`best_sequence_${diffKey}`, 0);
+}
+
+export function saveBestSequenceLengthIfBetter(diffKey, length) {
+  const isBetter = length > getBestSequenceLength(diffKey);
+  if (isBetter) setItem(`best_sequence_${diffKey}`, length);
+  return isBetter;
+}
+
+export function getBestNBackAccuracy(diffKey) {
+  return getItem(`best_nback_${diffKey}`, null);
+}
+
+export function saveBestNBackAccuracyIfBetter(diffKey, accuracy) {
+  const current = getBestNBackAccuracy(diffKey);
+  const isBetter = current == null || accuracy > current;
+  if (isBetter) setItem(`best_nback_${diffKey}`, accuracy);
+  return isBetter;
+}
+
+export function hasSeenTutorial(modeId) {
+  return getItem(`tutorial_seen_${modeId}`, false);
+}
+
+export function markTutorialSeen(modeId) {
+  setItem(`tutorial_seen_${modeId}`, true);
+}
+
 export function getSpacedRepetitionData() {
   return getItem("spaced_repetition", { boxes: {} });
 }
@@ -74,7 +103,7 @@ export function saveMusicEnabled(value) {
 }
 
 export function getMusicVolume() {
-  return getItem("music_volume", 0.6);
+  return getItem("music_volume", 0.3);
 }
 
 export function saveMusicVolume(value) {

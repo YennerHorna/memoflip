@@ -1,10 +1,12 @@
 // ui/board.js
-import { DIFFICULTIES } from "../core/difficulty.js";
 import { createTileElement, setTileFace, flipTileVisual, markTileMatched, shakeTile } from "./tile.js";
 
-export function renderBoard(boardEl, deck, diffKey, onTileClick) {
-  const { cols } = DIFFICULTIES[diffKey];
+export function renderBoard(boardEl, deck, cols, onTileClick) {
+  boardEl.className = "board";
   boardEl.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  // board.css usa --cols/--rows para que el tablero quepa entero en pantalla.
+  boardEl.style.setProperty("--cols", cols);
+  boardEl.style.setProperty("--rows", Math.ceil(deck.length / cols));
   boardEl.innerHTML = "";
 
   const tileElements = new Map();

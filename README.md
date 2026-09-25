@@ -6,9 +6,17 @@ encontrar las parejas iguales en el menor tiempo y número de movimientos posibl
 
 El diseño está anclado en literatura de psicología cognitiva: curva del olvido / repetición
 espaciada (Ebbinghaus), efecto de la prueba / testing effect (Roediger & Karpicke), y memoria
-de trabajo (Baddeley & Hitch, para futuros modos "Secuencia" y "N-back").
+de trabajo (Baddeley & Hitch, modos "Secuencia" y "N-back").
 
-Actualmente solo está implementado el **Modo Clásico** (parejas).
+Modos implementados:
+
+- **Clásico** — encontrar las parejas iguales.
+- **Secuencia** — el juego revela cartas en orden y hay que tocarlas en el mismo orden (tipo
+  prueba de Corsi). Cada nivel superado alarga la secuencia en una carta; hay 3 vidas.
+- **N-back** — aparece una carta a la vez y hay que pulsar «¡Coincide!» (o Espacio) cuando es
+  igual a la de hace N cartas (1, 2 o 3 según la dificultad). Puntúa por precisión.
+
+La primera vez que se entra a cada modo se muestra un tutorial (se puede volver a ver con «?»).
 
 ## Cómo correrlo en local
 
@@ -33,10 +41,11 @@ npx serve src
 ```
 src/
 ├── assets/sprites/   # Sprite sheets PNG + JSON de metadata
+├── assets/sounds/    # Efectos y música (ver el README de la carpeta para los nombres)
 ├── core/             # Lógica pura del juego, sin DOM (testeable en Node)
 ├── ui/                # Todo lo que toca el DOM (pintar el tablero, cartas, HUD, modales)
 ├── services/          # Wrappers de APIs del navegador (localStorage, audio)
-├── modes/             # Conecta core/ + ui/ para un modo de juego específico (ej. classicMode.js)
+├── modes/             # Conecta core/ + ui/ para un modo de juego (classic/, sequence/, nback/)
 ├── styles/            # CSS con variables de tema (soporta modo claro/oscuro)
 ├── index.html
 └── app.js             # Punto de entrada

@@ -1,6 +1,7 @@
 // modes/classic/classicMode.js
 // Orquesta un modo de juego: toma decisiones del "core" y le pide a "ui" que las pinte.
 import { createGameState, flipCard, resolveMismatch, tickSecond } from "../../core/gameState.js";
+import { DIFFICULTIES } from "../../core/difficulty.js";
 import { recordSuccess, recordFailure } from "../../core/spacedRepetition.js";
 import { renderBoard, applyFlip, applyUnflip, applyMatched, applyMismatch } from "../../ui/board.js";
 import { getBestResult, saveBestResultIfBetter, getSpacedRepetitionData, saveSpacedRepetitionData } from "../../services/storage.js";
@@ -10,15 +11,17 @@ export function createClassicMode({ boardEl, hud, winModal, diffKey }) {
   let state = createGameState(diffKey);
   let tileElements = null;
   let timerId = null;
+  let mismatchTimeoutId = null;
   const srState = getSpacedRepetitionData();
 
   function start() {
-    stopTimer();
+    stop();
     state = createGameState(diffKey);
     hud.reset(state.deck.length / 2);
     hud.setBest(getBestResult(diffKey));
+    hud.useClassicLabels();
     winModal.hide();
-    tileElements = renderBoard(boardEl, state.deck, diffKey, handleTileClick);
+    tileElements = renderBoard(boardEl, state.deck, DIFFICULTIES[diffKey].cols, handleTileClick);
   }
 
   function startTimer() {
@@ -32,6 +35,13 @@ export function createClassicMode({ boardEl, hud, winModal, diffKey }) {
   function stopTimer() {
     clearInterval(timerId);
     timerId = null;
+  }
+
+  function stop() {
+    stopTimer();
+    clearTimeout(mismatchTimeoutId);
+    mismatchTimeoutId = null;
+    audio.stopEffects();
   }
 
   function handleTileClick(cardId) {
@@ -52,7 +62,7 @@ export function createClassicMode({ boardEl, hud, winModal, diffKey }) {
       applyMatched(tileElements, [a, b]);
       hud.setMoves(state.moves);
       hud.setMatches(state.matchedCount, state.deck.length / 2);
-      audio.play("match");
+      audio.play("flip");
 
       const type = state.deck.find((c) => c.id === a).type;
       recordSuccess(srState, type);
@@ -68,10 +78,12 @@ export function createClassicMode({ boardEl, hud, winModal, diffKey }) {
       hud.setMoves(state.moves);
 
       const type = state.deck.find((c) => c.id === a).type;
+      audio.play("error");
       recordFailure(srState, type);
       saveSpacedRepetitionData(srState);
 
-      setTimeout(() => {
+      mismatchTimeoutId = setTimeout(() => {
+        mismatchTimeoutId = null;
         applyUnflip(tileElements, a);
         applyUnflip(tileElements, b);
         applyMismatch(tileElements, [a, b]);
@@ -93,5 +105,5 @@ export function createClassicMode({ boardEl, hud, winModal, diffKey }) {
     start();
   }
 
-  return { start, setDifficulty, stop: stopTimer };
+  return { start, setDifficulty, stop };
 }

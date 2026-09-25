@@ -7,14 +7,19 @@ let music = null;
 let sfxEnabled = true;
 let musicEnabled = true;
 let sfxVolume = 1;
-let musicVolume = 0.6;
+let musicVolume = 0.3;
+
+// Archivos en src/assets/sounds/ (ver el README de esa carpeta).
+// Se resuelven respecto a este módulo, no a la página, para que funcionen en cualquier ruta.
+const soundUrl = (file) => new URL(`../assets/sounds/${file}`, import.meta.url).href;
 
 const SOUND_FILES = {
-  flip: "../assets/sounds/flip.mp3",
-  match: "../assets/sounds/match.mp3",
-  win: "../assets/sounds/win.mp3",
+  flip: soundUrl("flip.mp3"),
+  error: soundUrl("error.mp3"),
+  win: soundUrl("win.mp3"),
+  loss: soundUrl("loss.mp3"),
 };
-const MUSIC_FILE = "../assets/sounds/music.mp3";
+const MUSIC_FILE = soundUrl("music.mp3");
 
 export function preloadSounds() {
   Object.entries(SOUND_FILES).forEach(([name, path]) => {
@@ -48,6 +53,14 @@ export function play(name) {
   } catch (err) {
     console.warn(`[audio] Error reproduciendo "${name}"`, err);
   }
+}
+
+// Corta los efectos que sigan sonando (win/loss duran varios segundos).
+export function stopEffects() {
+  Object.values(sfxSounds).forEach((audio) => {
+    audio.pause();
+    audio.currentTime = 0;
+  });
 }
 
 export function playMusic() {

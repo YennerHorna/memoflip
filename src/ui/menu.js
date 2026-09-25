@@ -1,12 +1,41 @@
 // ui/menu.js
 // Pantalla de inicio: elegir modo y dificultad antes de jugar.
-export function createMenu(root, { onPlay }) {
+// `difficultiesByMode` = { [modeId]: { [diffKey]: { label, description } } }: cada modo tiene sus propias dificultades.
+export function createMenu(root, { onPlay, difficultiesByMode }) {
   const modeGroup = root.querySelector("#modeGroup");
   const diffGroup = root.querySelector("#diffGroup");
   const playBtn = root.querySelector("#playBtn");
+  const diffDescription = root.querySelector("#diffDescription");
 
   let selectedMode = modeGroup.querySelector("button.active")?.dataset.mode ?? "classic";
-  let selectedDiff = diffGroup.querySelector("button.active")?.dataset.diff ?? "4x4";
+  const selectedDiffByMode = {};
+
+  function updateDescription() {
+    const diff = difficultiesByMode[selectedMode][selectedDiffByMode[selectedMode]];
+    diffDescription.textContent = diff.description ?? "";
+  }
+
+  function renderDifficulties() {
+    const difficulties = difficultiesByMode[selectedMode];
+    const keys = Object.keys(difficulties);
+    if (!keys.includes(selectedDiffByMode[selectedMode])) selectedDiffByMode[selectedMode] = keys[0];
+
+    diffGroup.innerHTML = "";
+    keys.forEach((key) => {
+      const btn = document.createElement("button");
+      btn.dataset.diff = key;
+      btn.textContent = difficulties[key].label;
+      btn.classList.toggle("active", key === selectedDiffByMode[selectedMode]);
+      btn.addEventListener("click", () => {
+        selectedDiffByMode[selectedMode] = key;
+        diffGroup.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        updateDescription();
+      });
+      diffGroup.appendChild(btn);
+    });
+    updateDescription();
+  }
 
   modeGroup.querySelectorAll("button[data-mode]").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -14,16 +43,10 @@ export function createMenu(root, { onPlay }) {
       selectedMode = btn.dataset.mode;
       modeGroup.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
+      renderDifficulties();
     });
   });
 
-  diffGroup.querySelectorAll("button[data-diff]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      selectedDiff = btn.dataset.diff;
-      diffGroup.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-    });
-  });
-
-  playBtn.addEventListener("click", () => onPlay(selectedMode, selectedDiff));
+  renderDifficulties();
+  playBtn.addEventListener("click", () => onPlay(selectedMode, selectedDiffByMode[selectedMode]));
 }

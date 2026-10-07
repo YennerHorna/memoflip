@@ -56,6 +56,20 @@
 
       <h2 class="section-title">Modo de juego</h2>
       <div class="mode-group" id="modeGroup">
+        <button class="mode-card" data-mode="custom">
+          <span class="mode-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="7" x2="20" y2="7"></line>
+              <line x1="4" y1="17" x2="20" y2="17"></line>
+              <circle cx="9" cy="7" r="2.4" fill="var(--panel)"></circle>
+              <circle cx="15" cy="17" r="2.4" fill="var(--panel)"></circle>
+            </svg>
+          </span>
+          <span class="mode-text">
+            <strong>Modo personalizado</strong>
+            <span>Elige el reloj y el tamaño del tablero</span>
+          </span>
+        </button>
         <button class="mode-card active" data-mode="classic">
           <span class="mode-icon">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -96,16 +110,58 @@
         </button>
       </div>
 
-      <h2 class="section-title">Dificultad</h2>
-      <div class="diff-group" id="diffGroup"></div>
-      <p id="diffDescription" class="diff-description"></p>
+      <div id="diffSection">
+        <h2 class="section-title">Dificultad</h2>
+        <div class="diff-group" id="diffGroup"></div>
+        <p id="diffDescription" class="diff-description"></p>
+      </div>
 
-      <button id="playBtn" class="primary play-btn">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="none" aria-hidden="true">
-          <path d="M6 4.2 19 12 6 19.8V4.2Z"></path>
-        </svg>
-        Jugar
-      </button>
+      <div id="customSection" class="hidden">
+        <h2 class="section-title">Reloj</h2>
+        <div class="diff-group" id="clockGroup">
+          <button type="button" data-clock="timer">Temporizador</button>
+          <button type="button" data-clock="stopwatch">Cronómetro</button>
+        </div>
+        <p id="clockDescription" class="diff-description"></p>
+
+        <div id="timeRow" class="custom-field hidden">
+          <span class="custom-field-title">Tiempo</span>
+          <div class="custom-inputs">
+            <label class="custom-input">
+              <input id="customMin" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="" aria-label="Minutos" />
+              <small>min</small>
+            </label>
+            <span class="custom-sep">:</span>
+            <label class="custom-input">
+              <input id="customSec" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="" aria-label="Segundos" />
+              <small>seg</small>
+            </label>
+          </div>
+        </div>
+
+        <h2 class="section-title">Tamaño del tablero</h2>
+        <div class="custom-inputs">
+          <label class="custom-input">
+            <input id="customCols" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="" aria-label="Columnas" />
+            <small>columnas</small>
+          </label>
+          <span class="custom-sep">×</span>
+          <label class="custom-input">
+            <input id="customRows" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="" aria-label="Filas" />
+            <small>filas</small>
+          </label>
+        </div>
+      </div>
+
+      <div class="play-area">
+        <p id="customInfo" class="diff-description custom-info hidden" aria-live="polite"></p>
+        <button id="playBtn" class="primary play-btn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" stroke="none" aria-hidden="true">
+            <path d="M6 4.2 19 12 6 19.8V4.2Z"></path>
+          </svg>
+          Jugar
+        </button>
+      </div>
 
       <div id="settingsPanel" class="settings-panel hidden">
         <div class="settings-panel-header">
@@ -202,7 +258,6 @@
 
     <footer>
       <p>MemoFlip — entrenamiento cognitivo basado en repetición espaciada y recuerdo activo.</p>
-      <p>By Yenner Horna</p>
     </footer>
   </div>
 
@@ -224,7 +279,7 @@
   <div class="win-overlay" id="winOverlay">
     <div class="win-card">
       <h2>
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg id="winIcon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="9"></circle>
           <path d="M8 12.4 10.6 15 16 9.5"></path>
         </svg>

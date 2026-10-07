@@ -2,6 +2,9 @@
 export function createWinModal(root, onPlayAgain) {
   const overlay = root.querySelector("#winOverlay");
   const titleEl = root.querySelector("#winTitle");
+  const iconEl = root.querySelector("#winIcon");
+  const CHECK_ICON = '<circle cx="12" cy="12" r="9"></circle><path d="M8 12.4 10.6 15 16 9.5"></path>';
+  const CLOCK_ICON = '<circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>';
   const timeEl = root.querySelector("#winTime");
   const movesEl = root.querySelector("#winMoves");
   const bestEl = root.querySelector("#winBest");
@@ -16,8 +19,11 @@ export function createWinModal(root, onPlayAgain) {
     show({ seconds, moves, isNewBest }) {
       this.showSummary({ title: "¡Completado!", primary: `${seconds}s`, secondary: `${moves} movimientos`, isNewBest });
     },
-    showSummary({ title, primary, secondary, isNewBest }) {
+    // `failed` = resultado negativo (ej. se acabó el tiempo): ícono de reloj y color de aviso.
+    showSummary({ title, primary, secondary, isNewBest, failed = false }) {
       titleEl.textContent = title;
+      iconEl.innerHTML = failed ? CLOCK_ICON : CHECK_ICON;
+      titleEl.parentElement.classList.toggle("failed", failed);
       timeEl.textContent = primary;
       movesEl.textContent = secondary;
       bestEl.innerHTML = isNewBest

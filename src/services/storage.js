@@ -54,6 +54,15 @@ export function saveBestNBackAccuracyIfBetter(diffKey, accuracy) {
   return isBetter;
 }
 
+// Última configuración del modo personalizado (se recuerda para la próxima vez).
+export function getCustomConfig() {
+  return getItem("custom_config", null);
+}
+
+export function saveCustomConfig(config) {
+  setItem("custom_config", config);
+}
+
 export function hasSeenTutorial(modeId) {
   return getItem(`tutorial_seen_${modeId}`, false);
 }

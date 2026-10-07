@@ -9,12 +9,14 @@ import { applyTheme } from "./ui/theme.js";
 import { createClassicMode } from "./modes/classic/classicMode.js";
 import { createSequenceMode } from "./modes/sequence/sequenceMode.js";
 import { createNBackMode } from "./modes/nback/nbackMode.js";
+import { createCustomMode } from "./modes/custom/customMode.js";
 import { DIFFICULTIES } from "./core/difficulty.js";
 import { SEQUENCE_DIFFICULTIES } from "./core/sequence.js";
 import { NBACK_DIFFICULTIES } from "./core/nback.js";
 import { CLASSIC_TUTORIAL } from "./modes/classic/tutorial.js";
 import { SEQUENCE_TUTORIAL } from "./modes/sequence/tutorial.js";
 import { NBACK_TUTORIAL } from "./modes/nback/tutorial.js";
+import { CUSTOM_TUTORIAL } from "./modes/custom/tutorial.js";
 import * as audio from "./services/audio.js";
 import {
   getTheme,
@@ -29,9 +31,11 @@ import {
   saveMusicVolume,
   hasSeenTutorial,
   markTutorialSeen,
+  getCustomConfig,
+  saveCustomConfig,
 } from "./services/storage.js";
 
-const TUTORIALS = { classic: CLASSIC_TUTORIAL, sequence: SEQUENCE_TUTORIAL, nback: NBACK_TUTORIAL };
+const TUTORIALS = { classic: CLASSIC_TUTORIAL, sequence: SEQUENCE_TUTORIAL, nback: NBACK_TUTORIAL, custom: CUSTOM_TUTORIAL };
 
 function main() {
   audio.preloadSounds();
@@ -81,6 +85,7 @@ function main() {
     classic: createClassicMode({ boardEl, hud, winModal, diffKey: "4x4" }),
     sequence: createSequenceMode({ boardEl, hud, winModal, diffKey: "easy" }),
     nback: createNBackMode({ boardEl, hud, winModal, diffKey: "easy" }),
+    custom: createCustomMode({ boardEl, hud, winModal }),
   };
   mode = modes.classic;
   let modeId = "classic";
@@ -88,18 +93,28 @@ function main() {
 
   createMenu(document, {
     difficultiesByMode: { classic: DIFFICULTIES, sequence: SEQUENCE_DIFFICULTIES, nback: NBACK_DIFFICULTIES },
-    onPlay: (selectedModeId, diffKey) => {
+    initialCustomConfig: getCustomConfig(),
+    onPlay: (selectedModeId, diffKey, customConfig) => {
       mode.stop();
       modeId = selectedModeId;
       mode = modes[modeId];
       showGame();
+      // El modo personalizado recibe su configuración (reloj + tamaño); los demás, una dificultad.
+      const apply = () => {
+        if (modeId === "custom") {
+          saveCustomConfig(customConfig);
+          mode.configure(customConfig);
+        } else {
+          mode.setDifficulty(diffKey);
+        }
+      };
       if (hasSeenTutorial(modeId)) {
-        mode.setDifficulty(diffKey);
+        apply();
         return;
       }
       // Primera vez en este modo: se prepara el tablero (para que detrás del tutorial se vea
       // el modo correcto) pero se detiene enseguida; la partida empieza al cerrar el tutorial.
-      mode.setDifficulty(diffKey);
+      apply();
       mode.stop();
       tutorial.show(TUTORIALS[modeId], () => {
         markTutorialSeen(modeId);

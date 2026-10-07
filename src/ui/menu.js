@@ -1,14 +1,32 @@
 // ui/menu.js
 // Pantalla de inicio: elegir modo y dificultad antes de jugar.
 // `difficultiesByMode` = { [modeId]: { [diffKey]: { label, description } } }: cada modo tiene sus propias dificultades.
-export function createMenu(root, { onPlay, difficultiesByMode }) {
+// El modo "custom" no usa dificultades: muestra su propio panel (reloj + tamaño) y entrega la
+// configuración como tercer argumento de `onPlay(modeId, diffKey, customConfig)`.
+import { createCustomPanel } from "./customPanel.js";
+
+export function createMenu(root, { onPlay, difficultiesByMode, initialCustomConfig }) {
   const modeGroup = root.querySelector("#modeGroup");
   const diffGroup = root.querySelector("#diffGroup");
   const playBtn = root.querySelector("#playBtn");
   const diffDescription = root.querySelector("#diffDescription");
+  const diffSection = root.querySelector("#diffSection");
+  const customSection = root.querySelector("#customSection");
+  const menuScreen = root.querySelector("#menuScreen");
+  const customInfo = root.querySelector("#customInfo");
 
   let selectedMode = modeGroup.querySelector("button.active")?.dataset.mode ?? "classic";
   const selectedDiffByMode = {};
+
+  const isCustom = () => selectedMode === "custom";
+
+  // `custom` se asigna después: el panel avisa de su estado ya al crearse.
+  let custom = null;
+  function updatePlayState() {
+    playBtn.disabled = isCustom() && custom !== null && !custom.isValid();
+  }
+  custom = createCustomPanel(root, { onChange: updatePlayState });
+  custom.setConfig(initialCustomConfig);
 
   function updateDescription() {
     const diff = difficultiesByMode[selectedMode][selectedDiffByMode[selectedMode]];
@@ -16,6 +34,13 @@ export function createMenu(root, { onPlay, difficultiesByMode }) {
   }
 
   function renderDifficulties() {
+    diffSection.classList.toggle("hidden", isCustom());
+    customSection.classList.toggle("hidden", !isCustom());
+    menuScreen.classList.toggle("is-custom", isCustom());
+    customInfo.classList.toggle("hidden", !isCustom());
+    updatePlayState();
+    if (isCustom()) return;
+
     const difficulties = difficultiesByMode[selectedMode];
     const keys = Object.keys(difficulties);
     if (!keys.includes(selectedDiffByMode[selectedMode])) selectedDiffByMode[selectedMode] = keys[0];
@@ -48,5 +73,12 @@ export function createMenu(root, { onPlay, difficultiesByMode }) {
   });
 
   renderDifficulties();
-  playBtn.addEventListener("click", () => onPlay(selectedMode, selectedDiffByMode[selectedMode]));
+  playBtn.addEventListener("click", () => {
+    if (isCustom()) {
+      if (!custom.isValid()) return;
+      onPlay("custom", null, custom.getConfig());
+      return;
+    }
+    onPlay(selectedMode, selectedDiffByMode[selectedMode]);
+  });
 }

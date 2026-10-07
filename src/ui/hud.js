@@ -43,6 +43,17 @@ export function createHud(root) {
       setLabels(CLASSIC_LABELS);
       this.setStatus("");
     },
+    // Modo personalizado: mismos datos que el clásico, pero el reloj se muestra como m:ss
+    // y con temporizador la etiqueta indica que es tiempo restante.
+    useCustomLabels(clock) {
+      setLabels({ ...CLASSIC_LABELS, time: clock === "timer" ? "Restante" : "Tiempo" });
+      this.setStatus("");
+    },
+    setClock(seconds) {
+      const s = Math.max(0, Math.floor(seconds));
+      els.time.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    },
+
     useSequenceLabels() { setLabels(SEQUENCE_LABELS); },
     setLevel(level) { els.time.textContent = String(level); },
     setLives(lives) { els.moves.textContent = "♥".repeat(lives) || "0"; },

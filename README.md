@@ -10,6 +10,10 @@ de trabajo (Baddeley & Hitch, modos "Secuencia" y "N-back").
 
 Modos implementados:
 
+- **Modo personalizado** — tú eliges el reloj y el tamaño del tablero. Reloj: **temporizador**
+  (cuenta regresiva con el tiempo que escribas, de 0:10 a 99:59; si se acaba, pierdes) o
+  **cronómetro** (sin límite, mide cuánto tardas). Tamaño: columnas × filas, de 2 a 10 cada una
+  (hasta 10×10 = 50 parejas); el total de cartas debe ser par. Se recuerda tu última configuración.
 - **Clásico** — encontrar las parejas iguales.
 - **Secuencia** — el juego revela cartas en orden y hay que tocarlas en el mismo orden (tipo
   prueba de Corsi). Cada nivel superado alarga la secuencia en una carta; hay 3 vidas.
@@ -45,7 +49,7 @@ src/
 ├── core/             # Lógica pura del juego, sin DOM (testeable en Node)
 ├── ui/                # Todo lo que toca el DOM (pintar el tablero, cartas, HUD, modales)
 ├── services/          # Wrappers de APIs del navegador (localStorage, audio)
-├── modes/             # Conecta core/ + ui/ para un modo de juego (classic/, sequence/, nback/)
+├── modes/             # Conecta core/ + ui/ para un modo de juego (classic/, sequence/, nback/, custom/)
 ├── styles/            # CSS con variables de tema (soporta modo claro/oscuro)
 ├── index.html
 └── app.js             # Punto de entrada

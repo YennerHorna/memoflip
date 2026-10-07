@@ -3,11 +3,11 @@
 import { buildDeck } from "./deck.js";
 import { getPairCount } from "./difficulty.js";
 
-export function createGameState(diffKey) {
-  const pairCount = getPairCount(diffKey);
+// Por defecto el tamaño sale de la dificultad; el modo personalizado pasa `pairCount` y `pool` propios.
+export function createGameState(diffKey, { pairCount = getPairCount(diffKey), pool } = {}) {
   return {
     diffKey,
-    deck: buildDeck(pairCount),
+    deck: buildDeck(pairCount, pool),
     flippedIds: [],
     matchedCount: 0,
     moves: 0,

@@ -30,6 +30,7 @@ export function renderNBackStage(boardEl, onRespond) {
   button.addEventListener("click", onRespond);
   function onKey(e) {
     if (e.code !== "Space" && e.code !== "Enter") return;
+    if (e.target instanceof HTMLInputElement) return; // ej. el nombre del ranking
     if (e.repeat) return;
     e.preventDefault();
     onRespond();

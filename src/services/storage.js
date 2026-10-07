@@ -54,6 +54,25 @@ export function saveBestNBackAccuracyIfBetter(diffKey, accuracy) {
   return isBetter;
 }
 
+// Ranking local: lista ordenada de { name, date, ...resultado } por modo y dificultad.
+export function getRanking(rankingKey) {
+  const list = getItem(`ranking_${rankingKey}`, []);
+  return Array.isArray(list) ? list : [];
+}
+
+export function saveRanking(rankingKey, entries) {
+  setItem(`ranking_${rankingKey}`, entries);
+}
+
+// Último nombre escrito, para proponerlo en la siguiente partida.
+export function getPlayerName() {
+  return getItem("player_name", "");
+}
+
+export function savePlayerName(name) {
+  setItem("player_name", name);
+}
+
 // Última configuración del modo personalizado (se recuerda para la próxima vez).
 export function getCustomConfig() {
   return getItem("custom_config", null);

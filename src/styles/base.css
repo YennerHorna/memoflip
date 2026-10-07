@@ -101,31 +101,37 @@ footer p { margin: 0; }
 
 .settings-panel {
   position: absolute; top: 62px; right: 16px;
-  width: min(280px, calc(100% - 32px));
-  background: var(--panel); border: 1px solid var(--border); border-radius: 16px;
-  padding: 16px; box-shadow: 0 14px 34px var(--shadow); z-index: 30;
-  display: flex; flex-direction: column; gap: 16px;
+  width: min(300px, calc(100% - 32px));
+  background: var(--panel); border: 1px solid var(--border); border-radius: 22px;
+  padding: 16px; box-shadow: 0 18px 40px var(--shadow); z-index: 30;
+  display: flex; flex-direction: column; gap: 8px;
 }
 .settings-panel.hidden { display: none; }
 
 .settings-panel-header {
   display: flex; justify-content: space-between; align-items: center;
-  font-weight: 600; font-size: 0.9rem;
+  font-weight: 600; font-size: 1rem; margin-bottom: 4px;
 }
 .icon-btn {
   width: 26px; height: 26px; border-radius: 50%; padding: 0;
   display: flex; align-items: center; justify-content: center;
 }
 
-.setting { display: flex; flex-direction: column; gap: 6px; }
-.setting-label {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 0.72rem; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.04em;
+/* Cada ajuste es una tarjeta como las de modo de juego. */
+.setting {
+  display: flex; flex-direction: column; gap: 8px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 10px 12px;
 }
+.setting-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.9rem; font-weight: 600; color: var(--text);
+}
+.setting-label svg { width: 18px; height: 18px; }
 .setting-row-header { display: flex; justify-content: space-between; align-items: center; }
-.theme-group { display: flex; gap: 6px; }
+.theme-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.theme-group button { padding: 7px 8px; }
 
-.volume-slider { width: 100%; margin-top: 8px; accent-color: var(--accent-2); }
+.volume-slider { width: 100%; margin: 0; accent-color: var(--accent-2); }
 .volume-slider:disabled { opacity: 0.4; }
 
 .switch { position: relative; display: inline-block; width: 42px; height: 24px; flex-shrink: 0; }
@@ -156,41 +162,53 @@ footer p { margin: 0; }
 }
 
 /* --- Modo personalizado --- */
-#diffSection.hidden, #customSection.hidden, .custom-field.hidden { display: none; }
+#diffSection.hidden, #customSection.hidden { display: none; }
 
-.custom-field { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
-.custom-field-title { font-size: 0.8rem; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.04em; }
-.custom-inputs { display: flex; align-items: flex-start; justify-content: center; gap: 10px; }
-.custom-field .custom-inputs { justify-content: flex-end; }
+/* Reloj: dos tarjetas de opción lado a lado, con el mismo estilo que las de modo de juego. */
+.clock-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.option-card { padding: 10px 12px; gap: 10px; }
+
+/* Tiempo y tamaño: tarjeta con icono + título a la izquierda y casillas a la derecha. */
+.config-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 10px 14px;
+}
+.config-card.hidden { display: none; }
+#timeRow { margin-top: 8px; }
+.config-card-title { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.custom-inputs { display: flex; align-items: flex-start; justify-content: flex-end; gap: 8px; }
 .custom-input { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .custom-input small { font-size: 0.7rem; color: var(--text-soft); }
 .custom-input input {
-  width: 68px; height: 48px; padding: 0; text-align: center;
-  font-family: inherit; font-size: 1.3rem; font-weight: 600;
-  color: var(--text); background: var(--bg);
+  width: 56px; height: 44px; padding: 0; text-align: center;
+  font-family: inherit; font-size: 1.2rem; font-weight: 600;
+  color: var(--text); background: var(--panel);
   border: 1px solid var(--border); border-radius: 14px;
   transition: border-color .15s ease, box-shadow .15s ease;
 }
 .custom-input input:focus { outline: none; border-color: var(--accent-2); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-2) 25%, transparent); }
-.custom-sep { height: 48px; display: flex; align-items: center; font-size: 1.2rem; font-weight: 600; color: var(--text-soft); }
+.custom-sep { height: 44px; display: flex; align-items: center; font-size: 1.2rem; font-weight: 600; color: var(--text-soft); }
 .custom-info { text-align: center; }
 .custom-info.bad { color: var(--accent); }
 
 /* Los títulos dentro de las secciones envueltas no son :first-child del menú: se les devuelve su margen. */
 #diffSection .section-title, #customSection .section-title { margin: 18px 0 8px; }
-#clockDescription { min-height: 0; }
 
-/* Con el panel personalizado el menú es más alto: se compacta como en pantallas bajas
-   y "Jugar" queda fijo abajo para no tener que hacer scroll hasta él. */
+/* Panel personalizado (segundo paso tras pulsar "Jugar"): reemplaza la lista de modos,
+   se compacta como en pantallas bajas y "Jugar" queda fijo abajo para no hacer scroll. */
+.menu-screen.is-custom #modeTitle, .menu-screen.is-custom #modeGroup { display: none; }
+.setup-header { text-align: center; font-weight: 600; font-size: 1rem; }
+/* Mismo botón redondo que el engranaje de ajustes, en la esquina opuesta. */
+.back-btn {
+  position: absolute; top: 16px; left: 16px; width: 40px; height: 40px;
+  border-radius: 50%; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+}
 .menu-screen.is-custom { padding: 18px 18px 14px; }
 .menu-screen.is-custom .menu-icon { display: none; }
 .menu-screen.is-custom .menu-hero { margin-bottom: 10px; }
 .menu-screen.is-custom .menu-hero h1 { font-size: 1.6rem; }
-.menu-screen.is-custom .mode-card { padding: 8px 12px; }
-.menu-screen.is-custom .mode-text span { font-size: 0.74rem; line-height: 1.3; }
 .menu-screen.is-custom #customSection .section-title { margin: 12px 0 6px; }
-.menu-screen.is-custom .custom-input input { height: 42px; width: 62px; font-size: 1.2rem; }
-.menu-screen.is-custom .custom-sep { height: 42px; }
 #customInfo.hidden { display: none; }
 .custom-info { margin: 12px 0 0; min-height: 2.4em; }
 .menu-screen.is-custom .play-area {
@@ -203,11 +221,12 @@ footer p { margin: 0; }
   #diffSection .section-title, #customSection .section-title { margin: 12px 0 6px; }
 }
 
-/* Pantallas bajas (celulares): en modo personalizado se ocultan textos secundarios para que
-   las casillas de tamaño y el botón "Jugar" quepan sin scroll. */
-@media (max-height: 800px) {
-  .menu-screen.is-custom .mode-card:not(.active) .mode-text span { display: none; }
-  .menu-screen.is-custom #clockDescription { display: none; }
+/* Pantallas angostas: los textos secundarios de las tarjetas se ocultan para que las casillas quepan. */
+@media (max-width: 400px) {
+  .config-card .mode-text span, .option-card .mode-text span { display: none; }
+  .option-card { justify-content: center; padding: 10px 8px; gap: 8px; }
+  .option-card .mode-icon { display: none; }
+  .config-card { padding: 10px 12px; }
 }
 
 .win-card h2.failed { color: var(--accent); }

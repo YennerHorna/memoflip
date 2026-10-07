@@ -5,7 +5,6 @@ import { CLOCKS, validateCustomConfig, formatClock } from "../core/custom.js";
 
 export function createCustomPanel(root, { onChange }) {
   const clockGroup = root.querySelector("#clockGroup");
-  const clockDescription = root.querySelector("#clockDescription");
   const timeRow = root.querySelector("#timeRow");
   const minInput = root.querySelector("#customMin");
   const secInput = root.querySelector("#customSec");
@@ -57,7 +56,6 @@ export function createCustomPanel(root, { onChange }) {
   function setClock(value) {
     clock = value;
     clockGroup.querySelectorAll("button").forEach((b) => b.classList.toggle("active", b.dataset.clock === value));
-    clockDescription.textContent = CLOCKS[value].description;
     timeRow.classList.toggle("hidden", value !== "timer");
     refresh();
   }

@@ -54,22 +54,8 @@
         <p>Encuentra las parejas.</p>
       </div>
 
-      <h2 class="section-title">Modo de juego</h2>
+      <h2 class="section-title" id="modeTitle">Modo de juego</h2>
       <div class="mode-group" id="modeGroup">
-        <button class="mode-card" data-mode="custom">
-          <span class="mode-icon">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="4" y1="7" x2="20" y2="7"></line>
-              <line x1="4" y1="17" x2="20" y2="17"></line>
-              <circle cx="9" cy="7" r="2.4" fill="var(--panel)"></circle>
-              <circle cx="15" cy="17" r="2.4" fill="var(--panel)"></circle>
-            </svg>
-          </span>
-          <span class="mode-text">
-            <strong>Modo personalizado</strong>
-            <span>Elige el reloj y el tamaño del tablero</span>
-          </span>
-        </button>
         <button class="mode-card active" data-mode="classic">
           <span class="mode-icon">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -108,6 +94,20 @@
             <span>¿Es igual a la de hace N cartas?</span>
           </span>
         </button>
+        <button class="mode-card" data-mode="custom">
+          <span class="mode-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="4" y1="7" x2="20" y2="7"></line>
+              <line x1="4" y1="17" x2="20" y2="17"></line>
+              <circle cx="9" cy="7" r="2.4" fill="var(--panel)"></circle>
+              <circle cx="15" cy="17" r="2.4" fill="var(--panel)"></circle>
+            </svg>
+          </span>
+          <span class="mode-text">
+            <strong>Modo personalizado</strong>
+            <span>Elige el reloj y el tamaño del tablero</span>
+          </span>
+        </button>
       </div>
 
       <div id="diffSection">
@@ -117,15 +117,60 @@
       </div>
 
       <div id="customSection" class="hidden">
-        <h2 class="section-title">Reloj</h2>
-        <div class="diff-group" id="clockGroup">
-          <button type="button" data-clock="timer">Temporizador</button>
-          <button type="button" data-clock="stopwatch">Cronómetro</button>
+        <div class="setup-header">
+          <button id="customBackBtn" class="back-btn" type="button" aria-label="Volver" title="Volver">
+            <svg viewBox="0 0 20 20" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12.5 4 6.5 10l6 6"></path>
+            </svg>
+          </button>
+          <span>Modo personalizado</span>
         </div>
-        <p id="clockDescription" class="diff-description"></p>
 
-        <div id="timeRow" class="custom-field hidden">
-          <span class="custom-field-title">Tiempo</span>
+        <h2 class="section-title">Reloj</h2>
+        <div class="clock-group" id="clockGroup">
+          <button type="button" class="mode-card option-card" data-clock="timer">
+            <span class="mode-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 2.5h12"></path>
+                <path d="M6 21.5h12"></path>
+                <path d="M7.5 2.5v3.2a4.5 4.5 0 0 0 1.6 3.4L12 12l-2.9 2.9a4.5 4.5 0 0 0-1.6 3.4v3.2"></path>
+                <path d="M16.5 2.5v3.2a4.5 4.5 0 0 1-1.6 3.4L12 12l2.9 2.9a4.5 4.5 0 0 1 1.6 3.4v3.2"></path>
+              </svg>
+            </span>
+            <span class="mode-text">
+              <strong>Temporizador</strong>
+              <span>Cuenta regresiva</span>
+            </span>
+          </button>
+          <button type="button" class="mode-card option-card" data-clock="stopwatch">
+            <span class="mode-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="13.5" r="8"></circle>
+                <path d="M12 9.5v4l2.6 1.6"></path>
+                <path d="M9.5 2.5h5"></path>
+                <path d="M12 2.5v3"></path>
+              </svg>
+            </span>
+            <span class="mode-text">
+              <strong>Cronómetro</strong>
+              <span>Sin límite</span>
+            </span>
+          </button>
+        </div>
+
+        <div id="timeRow" class="config-card hidden">
+          <span class="config-card-title">
+            <span class="mode-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="8.6"></circle>
+                <path d="M12 7.5V12l3 2"></path>
+              </svg>
+            </span>
+            <span class="mode-text">
+              <strong>Tiempo</strong>
+              <span>Hasta 99 min</span>
+            </span>
+          </span>
           <div class="custom-inputs">
             <label class="custom-input">
               <input id="customMin" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="" aria-label="Minutos" />
@@ -139,17 +184,33 @@
           </div>
         </div>
 
-        <h2 class="section-title">Tamaño del tablero</h2>
-        <div class="custom-inputs">
-          <label class="custom-input">
-            <input id="customCols" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="" aria-label="Columnas" />
-            <small>columnas</small>
-          </label>
-          <span class="custom-sep">×</span>
-          <label class="custom-input">
-            <input id="customRows" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="" aria-label="Filas" />
-            <small>filas</small>
-          </label>
+        <h2 class="section-title">Tablero</h2>
+        <div class="config-card">
+          <span class="config-card-title">
+            <span class="mode-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3.5" y="3.5" width="7" height="7" rx="1.6"></rect>
+                <rect x="13.5" y="3.5" width="7" height="7" rx="1.6"></rect>
+                <rect x="3.5" y="13.5" width="7" height="7" rx="1.6"></rect>
+                <rect x="13.5" y="13.5" width="7" height="7" rx="1.6"></rect>
+              </svg>
+            </span>
+            <span class="mode-text">
+              <strong>Tamaño</strong>
+              <span>Hasta 10×10</span>
+            </span>
+          </span>
+          <div class="custom-inputs">
+            <label class="custom-input">
+              <input id="customCols" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="" aria-label="Columnas" />
+              <small>columnas</small>
+            </label>
+            <span class="custom-sep">×</span>
+            <label class="custom-input">
+              <input id="customRows" type="text" inputmode="numeric" maxlength="2" autocomplete="off" placeholder="" aria-label="Filas" />
+              <small>filas</small>
+            </label>
+          </div>
         </div>
       </div>
 
@@ -175,7 +236,12 @@
         </div>
 
         <div class="setting">
-          <span class="setting-label">Tema</span>
+          <span class="setting-label">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"></path>
+            </svg>
+            Tema
+          </span>
           <div class="theme-group" id="themeGroup">
             <button data-theme="auto" class="active">Auto</button>
             <button data-theme="light">Claro</button>
@@ -288,6 +354,31 @@
       <p id="winTime">0s</p>
       <p id="winMoves">0 movimientos</p>
       <p id="winBest"></p>
+
+      <div id="rankingSection" class="ranking hidden">
+        <form id="recordForm" class="record-form hidden" autocomplete="off">
+          <label for="recordName">¡Entraste al ranking! Escribe tu nombre</label>
+          <div class="record-row">
+            <input id="recordName" type="text" maxlength="16" placeholder="Tu nombre" enterkeyhint="done" />
+            <button type="submit" class="primary" id="recordSaveBtn">Guardar</button>
+          </div>
+        </form>
+        <div id="rankingBoard" class="ranking-board hidden">
+          <h3 class="ranking-title">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"></path>
+              <path d="M8 5H5a3 3 0 0 0 3 5"></path>
+              <path d="M16 5h3a3 3 0 0 1-3 5"></path>
+              <path d="M12 13v3"></path>
+              <path d="M9 20h6"></path>
+            </svg>
+            Ranking · <span id="rankingLabel"></span>
+          </h3>
+          <ol id="rankingList" class="ranking-list"></ol>
+          <p id="rankingEmpty" class="ranking-empty hidden">Todavía no hay resultados guardados.</p>
+        </div>
+      </div>
+
       <button id="playAgainBtn" class="primary">Jugar de nuevo</button>
     </div>
   </div>

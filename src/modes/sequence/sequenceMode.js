@@ -2,11 +2,12 @@
 // Modo Secuencia: el juego revela cartas en orden y el jugador las repite.
 // Entrena la agenda visoespacial (Baddeley & Hitch) con recuerdo activo.
 import { CARD_TYPES } from "../../core/deck.js";
-import { createSequenceState, getSequenceDifficulty, beginInput, submitTap } from "../../core/sequence.js";
+import { createSequenceState, getSequenceDifficulty, beginInput, submitTap, SEQUENCE_DIFFICULTIES } from "../../core/sequence.js";
 import { pickTypesForReview } from "../../core/spacedRepetition.js";
 import { renderBoard, applyFlip, applyUnflip, applyMismatch } from "../../ui/board.js";
 import { getBestSequenceLength, saveBestSequenceLengthIfBetter, getSpacedRepetitionData } from "../../services/storage.js";
 import * as audio from "../../services/audio.js";
+import { buildRanking } from "../ranking.js";
 
 const START_DELAY_MS = 700;
 const ROUND_DELAY_MS = 900;
@@ -125,6 +126,16 @@ export function createSequenceMode({ boardEl, hud, winModal, diffKey }) {
       primary: reached ? `Nivel ${reached}` : "Sin niveles superados",
       secondary: reached ? `Recordaste una secuencia de ${reached} cartas` : "¡Inténtalo otra vez!",
       isNewBest: isNewBest && reached > 0,
+      // Sin niveles superados no hay nada que guardar.
+      ranking: reached > 0
+        ? buildRanking({
+            key: `sequence_${diffKey}`,
+            label: `Secuencia · ${SEQUENCE_DIFFICULTIES[diffKey].label.replace(" · ", " ")}`,
+            order: "score",
+            result: { score: reached },
+            format: (entry) => `Nivel ${entry.score}`,
+          })
+        : null,
     });
   }
 

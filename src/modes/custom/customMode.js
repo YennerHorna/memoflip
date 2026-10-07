@@ -7,6 +7,7 @@ import { getCustomPairCount, customDiffKey } from "../../core/custom.js";
 import { renderBoard, applyFlip, applyUnflip, applyMatched, applyMismatch } from "../../ui/board.js";
 import { getBestResult, saveBestResultIfBetter } from "../../services/storage.js";
 import * as audio from "../../services/audio.js";
+import { buildRanking, formatTimeEntry } from "../ranking.js";
 
 export function createCustomMode({ boardEl, hud, winModal }) {
   let config = null; // { clock, durationSec, cols, rows }
@@ -111,7 +112,15 @@ export function createCustomMode({ boardEl, hud, winModal }) {
     const isNewBest = saveBestResultIfBetter(state.diffKey, { seconds: state.seconds, moves: state.moves });
     hud.setBest(getBestResult(state.diffKey));
     audio.play("win");
-    winModal.show({ seconds: state.seconds, moves: state.moves, isNewBest });
+    // Mismo ranking para temporizador y cronómetro: en ambos se compara el tiempo empleado.
+    const ranking = buildRanking({
+      key: state.diffKey,
+      label: `Personalizado · ${config.cols}×${config.rows}`,
+      order: "time",
+      result: { seconds: state.seconds, moves: state.moves },
+      format: formatTimeEntry,
+    });
+    winModal.show({ seconds: state.seconds, moves: state.moves, isNewBest, ranking });
   }
 
   function onTimeUp() {

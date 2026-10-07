@@ -1,11 +1,12 @@
 // modes/nback/nbackMode.js
 // Modo N-back: el core decide qué carta sale y si hubo acierto; la UI solo lo pinta.
 import { CARD_TYPES } from "../../core/deck.js";
-import { createNBackState, getNBackDifficulty, advance, respond, getScore, NBACK_PASS_ACCURACY } from "../../core/nback.js";
+import { createNBackState, getNBackDifficulty, advance, respond, getScore, NBACK_PASS_ACCURACY, NBACK_DIFFICULTIES } from "../../core/nback.js";
 import { pickTypesForReview } from "../../core/spacedRepetition.js";
 import { renderNBackStage } from "../../ui/nbackStage.js";
 import { getBestNBackAccuracy, saveBestNBackAccuracyIfBetter, getSpacedRepetitionData } from "../../services/storage.js";
 import * as audio from "../../services/audio.js";
+import { buildRanking } from "../ranking.js";
 
 const START_DELAY_MS = 1200;
 
@@ -100,6 +101,16 @@ export function createNBackMode({ boardEl, hud, winModal, diffKey }) {
       secondary: `${hits}/${targets} coincidencias detectadas · ${falseAlarms} ${falseAlarms === 1 ? "falsa alarma" : "falsas alarmas"}`,
       // Un récord con la ronda no superada se guarda, pero no se celebra.
       isNewBest: isNewBest && passed,
+      // Solo las rondas superadas entran al ranking.
+      ranking: passed
+        ? buildRanking({
+            key: `nback_${diffKey}`,
+            label: `N-back · ${NBACK_DIFFICULTIES[diffKey].label.replace(" · ", " ")}`,
+            order: "score",
+            result: { score: accuracy },
+            format: (entry) => `${entry.score}%`,
+          })
+        : null,
     });
     if (!passed) winModal.setNote(`Necesitas al menos ${NBACK_PASS_ACCURACY}% para superarla`);
   }

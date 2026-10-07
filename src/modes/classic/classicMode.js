@@ -6,6 +6,7 @@ import { recordSuccess, recordFailure } from "../../core/spacedRepetition.js";
 import { renderBoard, applyFlip, applyUnflip, applyMatched, applyMismatch } from "../../ui/board.js";
 import { getBestResult, saveBestResultIfBetter, getSpacedRepetitionData, saveSpacedRepetitionData } from "../../services/storage.js";
 import * as audio from "../../services/audio.js";
+import { buildRanking, formatTimeEntry } from "../ranking.js";
 
 export function createClassicMode({ boardEl, hud, winModal, diffKey }) {
   let state = createGameState(diffKey);
@@ -97,7 +98,14 @@ export function createClassicMode({ boardEl, hud, winModal, diffKey }) {
     const isNewBest = saveBestResultIfBetter(diffKey, { seconds: state.seconds, moves: state.moves });
     hud.setBest(getBestResult(diffKey));
     audio.play("win");
-    winModal.show({ seconds: state.seconds, moves: state.moves, isNewBest });
+    const ranking = buildRanking({
+      key: `classic_${diffKey}`,
+      label: `Clásico · ${DIFFICULTIES[diffKey].label.replace(" · ", " ")}`,
+      order: "time",
+      result: { seconds: state.seconds, moves: state.moves },
+      format: formatTimeEntry,
+    });
+    winModal.show({ seconds: state.seconds, moves: state.moves, isNewBest, ranking });
   }
 
   function setDifficulty(newDiffKey) {

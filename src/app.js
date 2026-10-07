@@ -67,9 +67,11 @@ function main() {
   const gameScreen = document.getElementById("gameScreen");
 
   let mode;
+  let menu;
 
   function showMenu() {
     mode.stop();
+    menu.showModes();
     gameScreen.classList.add("hidden");
     menuScreen.classList.remove("hidden");
   }
@@ -79,7 +81,8 @@ function main() {
     gameScreen.classList.remove("hidden");
   }
 
-  const winModal = createWinModal(document, () => mode.start());
+  // "Jugar de nuevo" lleva a la lista de modos para elegir la siguiente partida.
+  const winModal = createWinModal(document, showMenu);
 
   const modes = {
     classic: createClassicMode({ boardEl, hud, winModal, diffKey: "4x4" }),
@@ -91,7 +94,7 @@ function main() {
   let modeId = "classic";
   const tutorial = createTutorial(document);
 
-  createMenu(document, {
+  menu = createMenu(document, {
     difficultiesByMode: { classic: DIFFICULTIES, sequence: SEQUENCE_DIFFICULTIES, nback: NBACK_DIFFICULTIES },
     initialCustomConfig: getCustomConfig(),
     onPlay: (selectedModeId, diffKey, customConfig) => {
